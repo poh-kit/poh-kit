@@ -22,7 +22,7 @@ Today, developers building ZK-enabled DAOs, voting platforms, grant rounds, and 
 
 | Package | Status | Description |
 |---|---|---|
-| `@poh-kit/core` | Skeleton | Identity commitments, nullifier management, proof lifecycle |
+| `@poh-kit/core` | ✅ (partial) | Trust tiers, attestation ordinals, identity-proof types — identity helpers land next |
 | `@poh-kit/verifier` | Skeleton | Server-side Groth16 verification helpers (on-chain + off-chain) |
 | `@poh-kit/react` | Skeleton | React hooks for enrollment and anonymous signaling flows |
 | `@poh-kit/examples/evm-hardhat` | Skeleton | Runnable EVM example — full stack, local chain, end-to-end flow |

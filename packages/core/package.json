@@ -1,15 +1,17 @@
 {
   "name": "@poh-kit/core",
-  "version": "0.0.0",
-  "description": "Core identity commitment, nullifier management, and proof lifecycle for poh-kit",
+  "version": "0.1.0",
+  "description": "Chain-agnostic types and identity lifecycle for layered Proof-of-Humanity",
+  "license": "MIT OR Apache-2.0",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "license": "(MIT OR Apache-2.0)",
-  "author": "Dagan Gilat <dagan.gilat@gmail.com>",
-  "peerDependencies": {
-    "@selfxyz/core": "*",
-    "@semaphore-protocol/identity": "*",
-    "@semaphore-protocol/group": "*",
-    "@semaphore-protocol/proof": "*"
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@semaphore-protocol/identity": "^4.0.0"
   }
 }
