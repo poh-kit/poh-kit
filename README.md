@@ -43,7 +43,7 @@ All packages are **MIT / Apache 2.0 dual-licensed**.
 │                                         ▼                    │
 │                              Nullifier + Commitment          │
 │                                         │                    │
-│                 WebAuthn Passkey ─► Semaphore Identity       │
+│              Caller secret* ─► Semaphore Identity            │
 │                                         │                    │
 │                                         ▼                    │
 │                            Identity Commitment               │
@@ -62,6 +62,10 @@ All packages are **MIT / Apache 2.0 dual-licensed**.
 │  Anonymous Signal (vote) ──► Group Membership Proof          │
 └──────────────────────────────────────────────────────────────┘
 ```
+
+\* `createIdentity(secret?)` takes a caller-supplied secret — you choose its
+custody (e.g. derive it from a WebAuthn passkey). poh-kit does not implement the
+passkey/WebAuthn step itself.
 
 See [docs/architecture.md](./docs/architecture.md) for a full walkthrough.
 
