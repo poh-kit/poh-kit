@@ -2,10 +2,13 @@
 //
 // Trust-tier vocabulary for Proof-of-Humanity enrollments.
 //
-// Self Protocol attestation IDs:
-//   1 = ICAO ePassport (NFC chip + Groth16 ZK)
-//   2 = EU biometric ID card (NFC chip + ZK)
-//   4 = Aadhaar / other biometric ID (NFC chip + ZK)
+// Self Protocol attestation IDs (see @selfxyz/core ATTESTATION_ID):
+//   1 = PASSPORT           — ICAO ePassport (NFC chip + Groth16 ZK)
+//   2 = BIOMETRIC_ID_CARD  — biometric ID card (NFC chip + ZK)
+//   3 = AADHAAR            — recognized by Self, not yet supported here
+//   4 = SELFRICA_ID_CARD   — biometric ID card (NFC chip + ZK)
+// poh-kit v1 supports 1 (passport) and 2/4 (id cards); 3 (Aadhaar) is
+// intentionally unmapped in v1 and returns null → treated as unsupported.
 //
 // Tiers: high — NFC+ZK passport; medium — NFC+ZK id card or OCR document;
 // low — manual review. A tier-T member belongs to every group whose minTier
