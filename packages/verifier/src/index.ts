@@ -1,23 +1,5 @@
-/**
- * @poh-kit/verifier
- *
- * Server-side Groth16 verification helpers — usable both from Node.js
- * (Cloud Functions, Cloud Run) and as a reference for on-chain Solidity verifiers.
- *
- * This is a skeleton — no implementation yet.
- */
-
-export interface VerifyProofInput {
-  proof: unknown;
-  publicSignals: unknown[];
-  verificationKey: unknown;
-}
-
-export async function verifyProof(_input: VerifyProofInput): Promise<boolean> {
-  throw new Error("not yet implemented — see roadmap in README.md");
-}
-
-export interface NullifierRegistry {
-  isUsed(nullifier: string): Promise<boolean>;
-  markUsed(nullifier: string): Promise<void>;
-}
+// SPDX-License-Identifier: MIT OR Apache-2.0
+export type { CachedGroup, GroupStore, NullifierStore, PohLogger, UsedSignalStore } from "./stores.js";
+export { silentLogger } from "./stores.js";
+export { InMemoryGroupStore, InMemoryNullifierStore, InMemoryUsedSignalStore } from "./memory.js";
+export { buildGroups } from "./groups.js";

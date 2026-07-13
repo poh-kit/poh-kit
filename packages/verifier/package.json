@@ -1,13 +1,20 @@
 {
   "name": "@poh-kit/verifier",
-  "version": "0.0.0",
-  "description": "Server-side Groth16 verification helpers for poh-kit — on-chain and off-chain",
+  "version": "0.1.0",
+  "description": "Server-side Self Protocol + Semaphore verification against pluggable storage",
+  "license": "MIT OR Apache-2.0",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "license": "(MIT OR Apache-2.0)",
-  "author": "Dagan Gilat <dagan.gilat@gmail.com>",
-  "peerDependencies": {
-    "@poh-kit/core": "*",
-    "snarkjs": "*"
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@poh-kit/core": "0.1.0",
+    "@selfxyz/core": "^1.2.0-beta.1",
+    "@semaphore-protocol/group": "^4.0.0",
+    "@semaphore-protocol/proof": "^4.0.0"
   }
 }
