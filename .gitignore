@@ -11,3 +11,7 @@ coverage/
 artifacts/
 cache/
 typechain-types/
+contracts/evm/artifacts/
+contracts/evm/cache/
+contracts/evm/typechain-types/
+contracts/solana/target/
