@@ -1,9 +1,7 @@
 # poh-kit
 
 **Layered Proof-of-Humanity for Ethereum applications.**
-Self Protocol (ZK ePassport) + Semaphore (anonymous group signaling) + WebAuthn, combined into a single, chain-agnostic, EVM-first TypeScript library.
-
-> ⚠️ **Early draft.** This repository is the skeleton for a grant application to the Ethereum Foundation Ecosystem Support Program. No production code yet — only the architecture, roadmap, and integration surface. See [docs/architecture.md](./docs/architecture.md) and the [grant application](../ethereum-foundation-pse-application.md) for full context.
+Self Protocol (ZK ePassport) + Semaphore (anonymous group signaling), combined into a single, chain-agnostic, EVM-first TypeScript library.
 
 ---
 
@@ -14,23 +12,23 @@ The Ethereum ecosystem has two powerful privacy primitives that are rarely combi
 - **[Self Protocol](https://github.com/selfxyz/self)** — prove humanity + nationality + age from an ICAO ePassport's NFC chip, via a ZK-SNARK over the country signing certificate. Enrollment-grade Sybil resistance.
 - **[Semaphore](https://github.com/semaphore-protocol/semaphore)** — prove anonymous membership in a group and cast an unlinkable signal (vote, endorsement, comment). Voting-grade anonymity.
 
-Today, developers building ZK-enabled DAOs, voting platforms, grant rounds, and civic governance apps pick one or the other — and lose half the security property they actually need. `poh-kit` provides a **canonical integration** that combines enrollment-grade Sybil resistance with voting-grade anonymity, with documented circuits, reproducible benchmarks, and a clean TypeScript integration surface.
+Today, developers building ZK-enabled DAOs, voting platforms, grant rounds, and civic governance apps pick one or the other — and lose half the security property they actually need. `poh-kit` provides a **canonical integration** that combines enrollment-grade Sybil resistance with voting-grade anonymity, with a typed TypeScript integration surface, tier-gated group construction, and identity contracts deployed on both EVM and Solana.
 
 ---
 
 ## Status
 
-| Package | Status | Description |
+| Component | Status | Description |
 |---|---|---|
-| `@poh-kit/core` | ✅ (partial) | Trust tiers, attestation ordinals, identity-proof types — identity helpers land next |
-| `@poh-kit/verifier` | ✅ (partial) | Storage adapters, tier-expanded Semaphore group building, anonymous signal verification, and Self Protocol passport verification — gaas-client lands next |
-| `@poh-kit/gaas-client` | ✅ | Typed client for the hosted verification API |
-| `@poh-kit/react` | Skeleton | React hooks for enrollment and anonymous signaling flows |
-| `@poh-kit/examples/evm-hardhat` | ✅ | Runnable EVM example — full stack, local chain, end-to-end flow |
-| contracts/evm | ✅ | IdentityRegistry, IdentityCommitments, Attestations — deployed on OP Sepolia |
-| contracts/solana | ✅ | Anchor identity programs — registry, commitments, attestations (devnet) |
+| `@poh-kit/core` | ✅ | Trust tiers, attestation ordinals, Semaphore identity helpers |
+| `@poh-kit/verifier` | ✅ | Self passport verification + tier-gated anonymous signals, pluggable storage |
+| `@poh-kit/gaas-client` | ✅ | Typed client for the hosted verification API ([spec](./docs/api/poh-verification-api.yaml)) |
+| `contracts/evm` | ✅ | Identity contracts — deployed on Optimism Sepolia |
+| `contracts/solana` | ✅ | Anchor identity programs — deployed on devnet |
+| `examples/evm-hardhat` | ✅ | Runnable end-to-end flow with a real Semaphore proof |
+| `@poh-kit/react` | Skeleton | Enrollment/signaling hooks — v1.1 |
 
-All packages will be **MIT / Apache 2.0 dual-licensed** on first release.
+All packages are **MIT / Apache 2.0 dual-licensed**.
 
 ---
 
@@ -69,56 +67,89 @@ See [docs/architecture.md](./docs/architecture.md) for a full walkthrough.
 
 ---
 
-## Aspirational Quick Start
+## Quick Start
 
-*(Draft API — not yet implemented. Feedback welcome on ergonomics.)*
+The core flow: create a Semaphore identity, expand tier groups from verified
+records, and verify a tier-gated anonymous signal. This is trimmed from the
+runnable example — see [examples/evm-hardhat](./examples/evm-hardhat) for the
+full flow, including on-chain contracts and a replay-rejection check.
 
 ```ts
-import { createIdentity, verifyPassport } from "@poh-kit/core";
-import { castAnonymousSignal } from "@poh-kit/core";
+import { createIdentity } from "@poh-kit/core";
+import {
+  buildGroups, verifySemaphoreSignal,
+  InMemoryGroupStore, InMemoryNullifierStore, InMemoryUsedSignalStore,
+} from "@poh-kit/verifier";
+import { Group } from "@semaphore-protocol/group";
+import { generateProof } from "@semaphore-protocol/proof";
 
-// 1. User enrolls via Self Protocol (scans passport NFC)
-const { nullifier, commitment } = await verifyPassport({
-  selfProof,
-  disclosures: ["humanity", "age >= 18"],
+// 1. Create a Semaphore identity (bound to a passport-derived nullifier
+//    via `@poh-kit/verifier`'s `createSelfVerifier` in production)
+const alice = createIdentity("alice-secret");
+const nullifiers = new InMemoryNullifierStore();
+await nullifiers.put({
+  nullifier: "demo-null-alice", commitment: alice.commitment,
+  proofType: "self-passport", attestationId: 1,
+  verifiedAt: new Date().toISOString(),
+  disclosures: [{ kind: "humanity" }], subject: "alice", trustTier: "medium",
 });
 
-// 2. Bind to a Semaphore identity (derived from WebAuthn secret)
-const identity = await createIdentity({ seed: webAuthnSecret });
+// 2. Build tier-expanded Semaphore groups from verified identities
+const groups = new InMemoryGroupStore();
+const built = await buildGroups(nullifiers, groups);
 
-// 3. Add to the proposal's Merkle group
-await group.addMember(identity.commitment);
-
-// 4. Cast an anonymous vote
-const proof = await castAnonymousSignal({
-  identity,
-  group,
-  signal: "vote: option-a",
-  externalNullifier: proposalId,
-});
+// 3. Cast and verify a tier-gated anonymous signal
+const group = new Group(built.medium.commitments.map((c) => BigInt(c)));
+const proof = await generateProof(alice.identity, group, "approve", "proposal-42");
+const used = new InMemoryUsedSignalStore();
+const result = await verifySemaphoreSignal(
+  { proof, minTier: "medium", scope: "proposal-42" },
+  { groups, usedSignals: used },
+);
+console.log(result); // { ok: true, ... }
 ```
+
+Run it end-to-end, with real deployed-style contracts on a local chain:
+
+```bash
+cd examples/evm-hardhat && npm install && npm run e2e
+```
+
+---
+
+## Open protocol, trusted service
+
+Everything in this repository — `@poh-kit/core`, `@poh-kit/verifier`,
+`@poh-kit/gaas-client`, the EVM and Solana identity contracts, and the
+example — is MIT/Apache-2.0. Foundation operates a hosted, multi-tenant
+verification service on top of the `gaas-client` API spec; that service (key
+issuance, billing, tenant management, hosting) is Foundation's commercial
+offering and is not part of this repository. You can point `gaas-client` at
+your own deployment of the spec instead.
 
 ---
 
 ## Roadmap
 
-The roadmap below is **dependency-ordered**, not time-bound. See the [grant application](../ethereum-foundation-pse-application.md) for full context on each milestone.
+The roadmap below is **dependency-ordered**, not time-bound.
 
-- **M1 — Kickoff**: project charter, repo scaffolding, threat model outline, benchmark methodology draft
-- **M2 — Benchmark + Reference Alpha**: mobile proving benchmark dataset, `@poh-kit/core` + `@poh-kit/verifier` alpha, first EVM example running end-to-end, first upstream documentation PRs
-- **M3 — Threat Model + Docs + Upstream**: threat model v1.0, documentation site live, external security review, ≥3 merged upstream PRs to Semaphore/Self
-- **M4 — Release + Paper + Final Report**: `poh-kit` v1.0 tagged, workshop paper submitted, external security review published
+- **v1 (shipped)** — `@poh-kit/core`, `@poh-kit/verifier`, `@poh-kit/gaas-client`, identity contracts on EVM (Optimism Sepolia) and Solana (devnet), a runnable end-to-end example, CI
+- **v1.1** — `@poh-kit/react` hooks for enrollment and anonymous signaling
+- **Later** — documentation site, external security review, mainnet contract deployments
 
 ---
 
 ## Contributing
 
-Not yet accepting PRs — this is a pre-funding skeleton. Once funded, the contributing guide will go here and PRs will be welcome.
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-To give pre-funding feedback:
+To give feedback:
 - Open an issue at https://github.com/foundation-vote/poh-kit/issues
 - Reach out on PSE Discord — look for `@dagangilat`
-- Ethereum Research forum post: *(link to be added after announcement)*
+
+## Security
+
+See [SECURITY.md](./SECURITY.md) for the vulnerability-reporting process.
 
 ---
 
@@ -134,7 +165,6 @@ Dual-licensed under **MIT** and **Apache 2.0**. See [LICENSE-MIT](./LICENSE-MIT)
 
 - **[Self Protocol](https://github.com/selfxyz/self)** — ePassport ZK proofs
 - **[Semaphore](https://github.com/semaphore-protocol/semaphore)** (Privacy Stewards of Ethereum) — anonymous group signaling
-- **[SimpleWebAuthn](https://github.com/MasterKale/SimpleWebAuthn)** — passkey-gated device binding
 - **[Circom](https://github.com/iden3/circom)** & **[snarkjs](https://github.com/iden3/snarkjs)** — ZK circuit compilation and proof generation
 
 Neither Self Protocol nor Semaphore endorse `poh-kit` — this is an independent integration effort. We aim to contribute improvements back upstream where appropriate.
