@@ -1,0 +1,17 @@
+[workspace]
+resolver = "2"
+members = [
+  "programs/identity-registry",
+  "programs/identity-commitments",
+  "programs/attestations",
+]
+
+# identity-commitments and attestations inherit `[lints] workspace = true`
+# from their upstream Cargo.toml; this table must exist for that to resolve.
+[workspace.lints.rust]
+unexpected_cfgs = "allow"
+
+[profile.release]
+overflow-checks = true
+lto = "fat"
+codegen-units = 1

@@ -1,0 +1,11 @@
+[toolchain]
+anchor_version = "0.31.1"
+
+[programs.devnet]
+identity_registry = "EgWb3fdVLp7Qon3p1UEAA3iwrbCGu4ro56MY7hrBFaoV"
+identity_commitments = "2eLQB1hoLv7nXvu1RYWFZw6eSkVjzUZEYeLDWpms1WkC"
+attestations = "GQrFse7NiB6QdqtagGayNYwrr8zn4W4uWhji57VkKGky"
+
+[provider]
+cluster = "devnet"
+wallet = "~/.config/solana/id.json"

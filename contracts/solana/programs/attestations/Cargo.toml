@@ -1,0 +1,25 @@
+[package]
+name = "attestations"
+version = "0.1.0"
+description = "Soulbound attestation PDAs for the Foundation platform. Records verified-human status and governance participation events on-chain."
+edition = "2021"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/foundation-vote/poh-kit"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "attestations"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build"]
+
+[dependencies]
+anchor-lang = "0.31.1"
+
+[lints]
+workspace = true

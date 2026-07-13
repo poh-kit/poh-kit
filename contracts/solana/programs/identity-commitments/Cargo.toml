@@ -1,0 +1,25 @@
+[package]
+name = "identity-commitments"
+version = "0.1.0"
+description = "Anchors Foundation identity commitments (SHA-256 hashes of sealed proof artifacts) to Solana. No identifying data on-chain."
+edition = "2021"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/foundation-vote/poh-kit"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "identity_commitments"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build"]
+
+[dependencies]
+anchor-lang = "0.31.1"
+
+[lints]
+workspace = true

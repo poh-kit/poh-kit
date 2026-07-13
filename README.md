@@ -27,6 +27,7 @@ Today, developers building ZK-enabled DAOs, voting platforms, grant rounds, and 
 | `@poh-kit/react` | Skeleton | React hooks for enrollment and anonymous signaling flows |
 | `@poh-kit/examples/evm-hardhat` | Skeleton | Runnable EVM example — full stack, local chain, end-to-end flow |
 | contracts/evm | ✅ | IdentityRegistry, IdentityCommitments, Attestations — deployed on OP Sepolia |
+| contracts/solana | ✅ | Anchor identity programs — registry, commitments, attestations (devnet) |
 
 All packages will be **MIT / Apache 2.0 dual-licensed** on first release.
 
