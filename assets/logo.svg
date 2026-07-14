@@ -1,0 +1,13 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="512" height="512" rx="116" ry="116" fill="#E07A5F"/>
+  <!-- head -->
+  <circle cx="248" cy="192" r="72" fill="#FFFFFF"/>
+  <!-- shoulders (half-disk) -->
+  <path d="M 120 388 A 128 128 0 0 1 376 388 Z" fill="#FFFFFF"/>
+  <!-- coral separation gap around badge -->
+  <circle cx="372" cy="368" r="88" fill="#E07A5F"/>
+  <!-- verified badge -->
+  <circle cx="372" cy="368" r="76" fill="#3D405B"/>
+  <!-- filled checkmark -->
+  <polygon points="404,330 418,344 362,402 326,366 340,352 362,374" fill="#FFFFFF"/>
+</svg>
