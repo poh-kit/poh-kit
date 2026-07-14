@@ -63,10 +63,12 @@ export async function verifySemaphoreSignal(
   if (!cached || cached.memberCount === 0) {
     return { ok: false, code: "GROUP_EMPTY", message: `Semaphore group for tier '${input.minTier}' is empty` };
   }
+  // Defense-in-depth: a valid Semaphore proof always carries a root, so a
+  // missing/empty one is rejected rather than allowed to skip the tier gate.
   const proofRoot = input.proof.merkleTreeRoot?.toString();
-  if (proofRoot && proofRoot !== cached.root) {
-    log.warn("signal rejected: root mismatch", { minTier: input.minTier });
-    return { ok: false, code: "TIER_ROOT_MISMATCH", message: "Proof root does not match the required tier group" };
+  if (!proofRoot || proofRoot !== cached.root) {
+    log.warn("signal rejected: root missing or mismatched", { minTier: input.minTier });
+    return { ok: false, code: "TIER_ROOT_MISMATCH", message: "Proof root missing or does not match the required tier group" };
   }
   const nullifier = input.proof.nullifier.toString();
   if (await deps.usedSignals.has(input.scope, nullifier)) {
