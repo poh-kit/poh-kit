@@ -41,27 +41,27 @@ The script prints the new addresses and a ready-to-run `hardhat verify` line for
 each (each constructor takes the admin address as its single argument). Then
 update `deployments/optimismSepolia.json` with the new addresses.
 
-## Quick alternative: verify the existing addresses (partial match)
+## Quick path: verify the existing addresses on Sourcify (default, key-free)
 
-No redeploy, no gas. Accepts the "partial match" label. The current deployments
-were created with admin/relayer `0x6090B362E6FCb55218E2d6bB4CBDd55573a71aF6`,
-which is the single constructor argument each contract needs:
+No redeploy, no gas, no API key. `hardhat.config.ts` has Sourcify enabled and
+Etherscan disabled, so `hardhat verify` submits to Sourcify only. The current
+deployments were created with admin/relayer
+`0x6090B362E6FCb55218E2d6bB4CBDd55573a71aF6` — the single constructor argument
+each contract needs:
 
 ```bash
-export ETHERSCAN_API_KEY=<your-etherscan-v2-api-key>
+cd contracts/evm && npm install   # first time only
 ADMIN=0x6090B362E6FCb55218E2d6bB4CBDd55573a71aF6
 npx hardhat verify --network optimismSepolia 0x847833b501d5e60AB434CCFCd61b658a670a76af $ADMIN  # IdentityRegistry
 npx hardhat verify --network optimismSepolia 0xA0A2aFC80ef2CA1d34a113287Ef6d3D16321D5a5 $ADMIN  # IdentityCommitments
 npx hardhat verify --network optimismSepolia 0xfE30FB91427a6dcA257b3d0c90108C78EEa3e985 $ADMIN  # Attestations
 ```
 
-### Key-free option (Sourcify)
-
-Sourcify needs no Etherscan account. Same partial-vs-full-match rule applies.
-
-```bash
-npx hardhat verify --network optimismSepolia --verifier sourcify <address> $ADMIN
-```
+Expect a **partial match** (runtime bytecode matches; metadata differs). Results
+appear at https://repo.sourcify.dev and on Sourcify-reading explorers like
+**Blockscout** (optimism-sepolia.blockscout.com). Note: Optimistic **Etherscan**
+does *not* read Sourcify — for a verified badge there specifically, use the
+Etherscan full-match path (redeploy from this source, above).
 
 ## Notes
 

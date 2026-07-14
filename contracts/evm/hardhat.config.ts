@@ -18,15 +18,19 @@ const config: HardhatUserConfig = {
       chainId: 11155420,
     },
   },
-  // `npx hardhat verify` reads the key from ETHERSCAN_API_KEY (a single
-  // Etherscan V2 key covers Optimism Sepolia). The key is never committed —
-  // export it in your shell. See VERIFY.md for the full recipe.
-  etherscan: {
-    apiKey: ETHERSCAN_API_KEY ?? "",
-  },
-  // Sourcify is key-free — an alternative that needs no Etherscan account.
+  // Sourcify is the default here: key-free, verifies the existing addresses as
+  // a partial match (runtime bytecode matches; metadata differs). `npx hardhat
+  // verify` runs Sourcify only, since Etherscan is disabled below.
   sourcify: {
     enabled: true,
+  },
+  // Etherscan is OFF by default (it would demand ETHERSCAN_API_KEY and needs an
+  // EXACT metadata match — which the existing addresses don't have). To use it,
+  // flip `enabled: true`, export ETHERSCAN_API_KEY, and verify freshly-redeployed
+  // contracts (full match). See VERIFY.md.
+  etherscan: {
+    enabled: false,
+    apiKey: ETHERSCAN_API_KEY ?? "",
   },
 };
 
