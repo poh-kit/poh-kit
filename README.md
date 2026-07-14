@@ -148,7 +148,7 @@ The roadmap below is **dependency-ordered**, not time-bound.
 See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 To give feedback:
-- Open an issue at https://github.com/foundation-vote/poh-kit/issues
+- Open an issue at https://github.com/poh-kit/poh-kit/issues
 - Reach out on PSE Discord — look for `@dagangilat`
 
 ## Security
