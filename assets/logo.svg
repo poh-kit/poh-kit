@@ -1,13 +1,14 @@
-<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-  <rect x="0" y="0" width="512" height="512" rx="116" ry="116" fill="#E07A5F"/>
-  <!-- head -->
-  <circle cx="248" cy="192" r="72" fill="#FFFFFF"/>
-  <!-- shoulders (half-disk) -->
-  <path d="M 120 388 A 128 128 0 0 1 376 388 Z" fill="#FFFFFF"/>
-  <!-- coral separation gap around badge -->
-  <circle cx="372" cy="368" r="88" fill="#E07A5F"/>
-  <!-- verified badge -->
-  <circle cx="372" cy="368" r="76" fill="#3D405B"/>
-  <!-- filled checkmark -->
-  <polygon points="404,330 418,344 362,402 326,366 340,352 362,374" fill="#FFFFFF"/>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="poh-kit">
+  <defs>
+    <linearGradient id="fnd" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6366F1"/>
+      <stop offset="1" stop-color="#34D399"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="116" ry="116" fill="url(#fnd)"/>
+  <!-- Foundation shield -->
+  <path d="M256 432 s144 -64 144 -176 V112 l-144 -48 -144 48 v144 c0 112 144 176 144 176 z" fill="#FFFFFF"/>
+  <!-- human figure inside the shield -->
+  <circle cx="256" cy="182" r="52" fill="#0A0E27"/>
+  <path d="M182 300 A74 74 0 0 1 330 300 Z" fill="#0A0E27"/>
 </svg>
