@@ -1,16 +1,15 @@
 //! Foundation — identity_commitments program.
 //!
 //! Anchors a 32-byte commitment hash (SHA-256 of canonical sealed proof-artifact
-//! bytes, produced on-device in Secure Enclave) to Solana. Writes nothing
+//! bytes, produced on-device in a secure element) to Solana. Writes nothing
 //! identifying — only the hash, the slot timestamp, and a one-byte PDA bump.
-//! The human→hash mapping lives server-side in Firestore
-//! (`identity_commitments/{uid}/commitments/{hashHex}`); the on-chain record
-//! is the non-repudiable proof-of-time anchor.
+//! The human→hash mapping lives in the operator's off-chain store; the on-chain
+//! record is the non-repudiable proof-of-time anchor.
 //!
-//! Single instruction: `anchor_commitment(hash)`. The payer is the server's
-//! shared Solana keypair (mobile holds none, per the hard invariant). Re-anchor
-//! of the same hash fails with the runtime `AccountAlreadyInUse` error — the
-//! caller treats that as idempotent success and reads the existing record.
+//! Single instruction: `anchor_commitment(hash)`. The payer is a server-held
+//! Solana keypair (clients hold none). Re-anchor of the same hash fails with the
+//! runtime `AccountAlreadyInUse` error — the caller treats that as idempotent
+//! success and reads the existing record.
 
 use anchor_lang::prelude::*;
 

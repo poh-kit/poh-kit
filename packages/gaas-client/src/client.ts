@@ -10,8 +10,7 @@ import type {
   VerifyPassportResponse,
 } from "./types.js";
 
-const DEFAULT_BASE_URL =
-  "https://evoting-api-213114263206.us-east1.run.app";
+const DEFAULT_BASE_URL = "https://api.foundation-global.com";
 
 /**
  * Thin TypeScript client for the Foundation Proof of Humanity API.
@@ -64,7 +63,7 @@ export class PohClient {
    * Requires a Bearer JWT obtained after passport verification.
    *
    * @param commitment  - Semaphore identity commitment (bigint as string).
-   * @param bearerToken - Firebase JWT issued after ePassport verification.
+   * @param bearerToken - Bearer JWT issued after ePassport verification.
    * @returns Success flag and the attached commitment.
    */
   async attachCommitment(

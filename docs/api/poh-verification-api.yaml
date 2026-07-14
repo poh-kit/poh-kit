@@ -12,7 +12,7 @@ info:
     name: MIT OR Apache-2.0
     identifier: MIT OR Apache-2.0
 servers:
-  - url: https://evoting-api-213114263206.us-east1.run.app
+  - url: https://api.foundation-global.com
     description: Foundation-hosted service
 components:
   securitySchemes:

@@ -4,9 +4,9 @@ pragma solidity ^0.8.24;
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 import {IIdentityRegistry} from "./interfaces/IIdentityRegistry.sol";
 
-/// VoterAccount store: population codes (UN-M49) + H3 cells, keyed by keccak256(firebaseUid)
-/// (or, for the pillars' eligibility lookups, by bytes32(uint160(userAddress)) — the key is
-/// opaque; the caller chooses a consistent derivation).
+/// VoterAccount store: population codes (UN-M49) + H3 cells, keyed by an opaque
+/// bytes32 uid — e.g. keccak256 of the caller's user id, or bytes32(uint160(userAddress)).
+/// The key is opaque; the caller chooses a consistent derivation.
 contract IdentityRegistry is AccessControl, IIdentityRegistry {
     bytes32 public constant RELAYER_ROLE = keccak256("RELAYER_ROLE");
 
