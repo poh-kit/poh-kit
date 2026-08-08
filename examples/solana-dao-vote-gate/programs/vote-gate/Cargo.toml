@@ -1,0 +1,22 @@
+[package]
+name = "vote-gate"
+version = "0.1.0"
+description = "Reference integration: gate a DAO vote on poh-kit verified-human status"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/poh-kit/poh-kit"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "vote_gate"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build"]
+
+[dependencies]
+anchor-lang = "0.31.1"

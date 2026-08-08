@@ -1,0 +1,33 @@
+[toolchain]
+anchor_version = "0.31.1"
+
+[programs.localnet]
+vote_gate = "9oBNuHzFAm2tUtGRpQFUkNfKoy6Tz9uquwDfnvzMRdGi"
+mock_attestations = "3FipGhhsY9nT6ByjoU37p8YBdck2LWtRkvLuA8JejtvE"
+
+# vote_gate is the only program meant to ever actually deploy to devnet/mainnet —
+# mock_attestations is a localnet-only test fixture, never deployed anywhere real.
+# See programs/mock-attestations/src/lib.rs for why it exists.
+[programs.devnet]
+vote_gate = "9oBNuHzFAm2tUtGRpQFUkNfKoy6Tz9uquwDfnvzMRdGi"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+# localnet, deliberately — `anchor test` spins up its own solana-test-validator
+# and deploys both programs there. This example's test suite depends on
+# mock-attestations, a local-only fixture (see its module doc) that should
+# never touch a real cluster. When you're ready to deploy vote-gate for real
+# against poh-kit's actual attestations program, override with
+# `anchor deploy --provider.cluster devnet` (then mainnet) — don't change this
+# default, or `anchor test` starts deploying placeholder program IDs to a real
+# network on every run.
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "npx ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+
+[test]
+startup_wait = 10000

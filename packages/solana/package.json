@@ -1,0 +1,27 @@
+{
+  "name": "@poh-kit/solana",
+  "version": "0.1.0",
+  "description": "Solana-specific helpers for the attestations program — PDA derivation for on-chain, API-free verification checks",
+  "license": "MIT OR Apache-2.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@poh-kit/core": "0.1.0",
+    "@solana/web3.js": "^1.95.0"
+  },
+  "devDependencies": {
+    "vitest": "^2.0.0"
+  },
+  "keywords": ["proof-of-humanity", "sybil-resistance", "solana", "anchor", "pda"],
+  "repository": { "type": "git", "url": "git+https://github.com/poh-kit/poh-kit.git", "directory": "packages/solana" },
+  "homepage": "https://github.com/poh-kit/poh-kit/tree/main/packages/solana#readme",
+  "bugs": "https://github.com/poh-kit/poh-kit/issues",
+  "publishConfig": { "access": "public" }
+}

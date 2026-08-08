@@ -1,0 +1,11 @@
+[workspace]
+resolver = "2"
+members = ["programs/vote-gate", "programs/mock-attestations"]
+
+[workspace.lints.rust]
+unexpected_cfgs = "allow"
+
+[profile.release]
+overflow-checks = true
+lto = "fat"
+codegen-units = 1

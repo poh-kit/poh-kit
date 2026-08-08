@@ -1,0 +1,21 @@
+{
+  "name": "@poh-kit/example-solana-airdrop-filter",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Filter an airdrop candidate list to verified-humans only — a pure on-chain read, no API key",
+  "license": "MIT OR Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "filter": "tsx src/filter.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@poh-kit/solana": "file:../../packages/solana",
+    "@solana/web3.js": "^1.95.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "tsx": "^4.16.0",
+    "typescript": "^5.5.0"
+  }
+}

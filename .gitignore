@@ -15,3 +15,5 @@ contracts/evm/artifacts/
 contracts/evm/cache/
 contracts/evm/typechain-types/
 contracts/solana/target/
+examples/solana-dao-vote-gate/target/
+examples/solana-dao-vote-gate/.anchor/

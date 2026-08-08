@@ -23,9 +23,12 @@ Today, developers building ZK-enabled DAOs, voting platforms, grant rounds, and 
 | `@poh-kit/core` | ✅ | Trust tiers, attestation ordinals, Semaphore identity helpers |
 | `@poh-kit/verifier` | ✅ | Self passport verification + tier-gated anonymous signals, pluggable storage |
 | `@poh-kit/gaas-client` | ✅ | Typed client for the hosted verification API ([spec](./docs/api/poh-verification-api.yaml)) |
+| `@poh-kit/solana` | ✅ | PDA derivation for the attestations program — check verified-human status with zero API calls |
 | `contracts/evm` | ✅ | Identity contracts — deployed on Optimism Sepolia |
 | `contracts/solana` | ✅ | Anchor identity programs — deployed on devnet |
 | `examples/evm-hardhat` | ✅ | Runnable end-to-end flow with a real Semaphore proof |
+| `examples/solana-airdrop-filter` | ✅ | Filter a wallet list to verified-humans only, on-chain, no API |
+| `examples/solana-dao-vote-gate` | ✅ | Minimal Anchor program gating a vote on verified-human status |
 | `@poh-kit/react` | Skeleton | Enrollment/signaling hooks — v1.1 |
 
 All packages are **MIT / Apache 2.0 dual-licensed**.
