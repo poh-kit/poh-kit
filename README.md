@@ -122,6 +122,9 @@ Run it end-to-end, with real deployed-style contracts on a local chain:
 cd examples/evm-hardhat && npm install && npm run e2e
 ```
 
+Build and test everything with `scripts/run.sh`; publish packages (or deploy contracts) with
+`scripts/deploy.sh`. Both take `--help` for the modes and targets.
+
 ---
 
 ## Open protocol, trusted service
